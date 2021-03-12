@@ -2,7 +2,7 @@
 
 [![Build and Publish](https://github.com/curseforge-docker/all-the-mods-6/actions/workflows/build-and-publish.yml/badge.svg)](https://github.com/curseforge-docker/all-the-mods-6/actions/workflows/build-and-publish.yml)
   
-This repository contains ready-to-use docker images for some of the most popular Minecraft Modpacks, such as _All the Mods 6_, _RLCraft_ and _SkyFactory 4_.
+This repository contains a ready-to-use docker image the Minecraft Modpack _All the Mods 6_.
 
 ## Usage
 
