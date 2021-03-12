@@ -23,7 +23,7 @@ In order to persist your data (e.g. in case of a modpack update), a volume with 
 If you want to name the volume, run
 
 ```console
-docker run -v /var/lib/minecraft-atm6:/minecraft ...
+docker run -v minecraft-server:/minecraft ...
 ```
 
 ### Image hosting
@@ -31,11 +31,11 @@ docker run -v /var/lib/minecraft-atm6:/minecraft ...
 All container images are hosted on Docker Hub as well as in the Github Container Registry.  
 Docker Hub
 ```console
-docker pull curseforge/all-the-mods-6:1.4.1
+docker pull curseforge/all-the-mods-6
 ```
 Github Container Registry
 ```console
-docker pull ghcr.io/curseforge-docker/all-the-mods-6:1.4.1
+docker pull ghcr.io/curseforge-docker/all-the-mods-6
 ```
 ## List of available versions
 | Version                                                                                     | Image details
