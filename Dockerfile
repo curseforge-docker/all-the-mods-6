@@ -8,6 +8,8 @@ COPY eulacheck.sh .
 COPY versions/$VERSION/server-setup-config.yaml .
 COPY versions/$VERSION/startserver.sh .
 
+RUN chmod +x eulacheck.sh startserver.sh
+
 VOLUME /minecraft
 
 RUN yum install -y which wget
