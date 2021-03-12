@@ -10,7 +10,7 @@ To simply use the latest version of this modpack run
 ```console
 docker run -d --name minecraft-server -p 25565:25565 -e EULA=true curseforge/all-the-mods-6
 ```
-> _It is important to always add `-e EULA=true` id the docker commands as Mojang/Microsoft requires EULA acceptance._
+> _It is important to always add `-e EULA=true` to the docker commands as Mojang/Microsoft requires EULA acceptance._
 
 If you want others to join you or this image runs on a server, you need to open the port 25565 (TCP) on your firewall.
 
