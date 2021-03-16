@@ -1,7 +1,7 @@
 FROM amazoncorretto:8
 
 ARG VERSION
-ENV VERION=$VERSION
+ENV VERSION=$VERSION
 
 WORKDIR /minecraft
 COPY eulacheck.sh .
