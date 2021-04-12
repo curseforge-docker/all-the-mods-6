@@ -9,16 +9,12 @@ on:
       version:
         description: 'Modpack version'
         required: true
-      java-version:
-        description: 'Java version'
-        default: 11
 
 jobs:
   build:
     env:
       NAME: ${{ github.event.inputs.name }}
       VERSION: ${{ github.event.inputs.version }}
-      JAVA_VERSION: ${{ github.event.inputs.java-version }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -44,8 +40,7 @@ jobs:
             -t ghcr.io/curseforge-docker/${NAME}:${VERSION} \
             -t curseforge/${NAME}:latest \
             -t ghcr.io/curseforge-docker/${NAME}:latest \
-            --build-arg VERSION \
-            --build-arg JAVA_VERSION
+            --build-arg VERSION
 
       - name: Push to Docker Hub
         run: |
