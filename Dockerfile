@@ -1,4 +1,6 @@
-FROM amazoncorretto:8
+ARG JAVA_VERSION=11
+
+FROM amazoncorretto:$JAVA_VERSION
 
 ARG VERSION
 ENV VERSION=$VERSION
