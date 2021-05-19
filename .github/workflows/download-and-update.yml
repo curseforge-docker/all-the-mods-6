@@ -41,9 +41,9 @@ jobs:
 
       - name: Commit and Push the new Version
         uses: EndBug/add-and-commit@v7
-          with:
-            add: 'versions/${LATEST_VERSION_NUMBER}'
-            message: 'Added version ${LATEST_VERSION_NUMBER}'
+        with:
+          add: 'versions/${LATEST_VERSION_NUMBER}'
+          message: 'Added version ${LATEST_VERSION_NUMBER}'
 
       - name: Run 'Build and Publish' Workflow
         uses: benc-uk/workflow-dispatch@v1
