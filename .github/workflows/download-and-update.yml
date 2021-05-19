@@ -1,0 +1,53 @@
+name: Download and Update
+
+on:
+  workflow_dispatch:
+
+jobs:
+  download:
+    env:
+      VERSIONS_URL: 'https://addons-ecs.forgesvc.net/api/v2/addon/381671/files'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download the Versions JSON
+        run: curl ${VERSIONS_URL} -o versions.json
+
+      - name: Set the env variable LATEST_VERSION_NUMBER
+        run: LATEST_VERSION_NUMBER=$(jq -r --slurpfile versions.json 'sort_by(.fileDate)[-1].fileName' | cut -d '-' -f 2 | cut -d '.' -f 1-3)
+
+      - name: Set the env variable LATEST_VERSION_DOWNLOAD
+        run: LATEST_VERSION_DOWNLOAD=$(jq -r --slurpfile versions.json 'sort_by(.fileDate)[-1].downloadUrl')
+
+      - name: Remove the downladed versions JSON
+        run: rm versions.json
+
+      - name: Download the latest versions zip file
+        run: curl ${LATEST_VERSION_DOWNLOAD} -o download.zip
+
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Create new Folder for the new version
+        run: mkdir versions/${LATEST_VERSION_NUMBER}
+          
+      - name: Unzip the newly downloaded File
+        run: unzip download.zip -d versions/${LATEST_VERSION_NUMBER}
+
+      - name: Remove the downladed versions zip file
+        run: rm download.zip
+
+      - name: Remove the unwanted bat file
+        run: rm versions/${LATEST_VERSION_NUMBER}/startserver.bat
+
+      - name: Commit and Push the new Version
+        uses: EndBug/add-and-commit@v7
+          with:
+            add: 'versions/${LATEST_VERSION_NUMBER}'
+            message: 'Added version ${LATEST_VERSION_NUMBER}'
+
+      - name: Run 'Build and Publish' Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Build and Publish
+          token: ${{ secrets.PERSONAL_TOKEN }}
+          inputs: '{ "name": "all-the-mods-6", "version": "${LATEST_VERSION_NUMBER}" }'
