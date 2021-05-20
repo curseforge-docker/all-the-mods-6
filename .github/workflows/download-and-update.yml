@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download the Versions JSON
-        run: curl ${VERSIONS_URL} -o versions.json
+        run: curl ${VERSIONS_URL// /%20} -o versions.json
 
       - name: Set the env variable LATEST_VERSION_NUMBER
         run: |
@@ -26,7 +26,7 @@ jobs:
         run: rm versions.json
 
       - name: Download the latest versions zip file
-        run: curl "${LATEST_VERSION_DOWNLOAD}" -o download.zip
+        run: curl ${LATEST_VERSION_DOWNLOAD// /%20} -o download.zip
 
       - name: Check out repository
         uses: actions/checkout@v2
