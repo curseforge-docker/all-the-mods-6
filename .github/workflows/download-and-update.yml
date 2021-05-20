@@ -20,7 +20,7 @@ jobs:
       - name: Set the env variable LATEST_VERSION_DOWNLOAD
         run: |
           LATEST_VERSION_DOWNLOAD=$(jq -r 'sort_by(.fileDate)[-1].downloadUrl' versions.json)
-          echo $LATEST_VERSION_DOWNLOAD
+          echo "$LATEST_VERSION_DOWNLOAD"
 
       - name: Remove the downladed versions JSON
         run: rm versions.json
