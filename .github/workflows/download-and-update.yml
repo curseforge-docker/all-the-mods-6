@@ -19,7 +19,7 @@ jobs:
 
       - name: Set the env variable LATEST_VERSION_DOWNLOAD
         run: |
-          LATEST_VERSION_DOWNLOAD=$(jq -r 'sort_by(.fileDate)[-1].downloadUrl' versions.json | sed -e 's/ /%20/')
+          LATEST_VERSION_DOWNLOAD=$(jq -r 'sort_by(.fileDate)[-1].downloadUrl' versions.json | sed -e 's/ /%20/g')
           echo "$LATEST_VERSION_DOWNLOAD"
 
       - name: Remove the downladed versions JSON
