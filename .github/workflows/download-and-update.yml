@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download the Versions JSON
-        run: 'curl "${VERSIONS_URL}" -o versions.json'
+        run: curl ${VERSIONS_URL} -o versions.json
 
       - name: Set the env variable LATEST_VERSION_NUMBER
         run: |
@@ -19,14 +19,14 @@ jobs:
 
       - name: Set the env variable LATEST_VERSION_DOWNLOAD
         run: |
-          LATEST_VERSION_DOWNLOAD=$(jq -r 'sort_by(.fileDate)[-1].downloadUrl' versions.json | sed -e 's/ /\ /g')
+          LATEST_VERSION_DOWNLOAD=$(jq -r 'sort_by(.fileDate)[-1].downloadUrl' versions.json)
           echo "$LATEST_VERSION_DOWNLOAD"
 
       - name: Remove the downladed versions JSON
         run: rm versions.json
 
       - name: Download the latest versions zip file
-        run: curl $LATEST_VERSION_DOWNLOAD -o download.zip
+        run: curl "$(jq -r 'sort_by(.fileDate)[-1].downloadUrl' versions.json)" -o download.zip
 
       - name: Check out repository
         uses: actions/checkout@v2
