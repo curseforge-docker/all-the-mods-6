@@ -19,14 +19,14 @@ jobs:
 
       - name: Set the env variable LATEST_VERSION_DOWNLOAD
         run: |
-          LATEST_VERSION_DOWNLOAD=$(jq -r 'sort_by(.fileDate)[-1].downloadUrl' versions.json | sed -e 's/ /%20/g')
+          LATEST_VERSION_DOWNLOAD=$(jq -r 'sort_by(.fileDate)[-1].downloadUrl' versions.json | sed -e 's/ /\ /g')
           echo "$LATEST_VERSION_DOWNLOAD"
 
       - name: Remove the downladed versions JSON
         run: rm versions.json
 
       - name: Download the latest versions zip file
-        run: 'curl "$LATEST_VERSION_DOWNLOAD" -o download.zip'
+        run: curl $LATEST_VERSION_DOWNLOAD -o download.zip
 
       - name: Check out repository
         uses: actions/checkout@v2
@@ -35,13 +35,13 @@ jobs:
         run: mkdir versions/${LATEST_VERSION_NUMBER}
           
       - name: Unzip the newly downloaded File
-        run: 'unzip download.zip -d "versions/${LATEST_VERSION_NUMBER}"'
+        run: unzip download.zip -d versions/${LATEST_VERSION_NUMBER}
 
       - name: Remove the downladed versions zip file
         run: rm download.zip
 
       - name: Remove the unwanted bat file
-        run: 'rm "versions/${LATEST_VERSION_NUMBER}/startserver.bat"'
+        run: rm versions/${LATEST_VERSION_NUMBER}/startserver.bat
 
       - name: Commit and Push the new Version
         uses: EndBug/add-and-commit@v7
