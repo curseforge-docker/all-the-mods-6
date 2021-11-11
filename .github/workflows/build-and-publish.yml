@@ -5,13 +5,13 @@ on:
     inputs:
       name: 
         description: 'Modpack name'
-        required: true
+        default: "all-the-mods-6"
       version:
         description: 'Modpack version'
         required: true
       java-version:
         description: 'Java version'
-        default: 11
+        default: "11"
 
 jobs:
   build:
