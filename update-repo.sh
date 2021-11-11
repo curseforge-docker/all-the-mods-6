@@ -43,13 +43,16 @@ while read VERSION; do
     echo "done"
 done <needed-versions.txt
 
+if (( $(wc <needed-versions.txt -l) > 0)); then
+    echo "Pushing new version(s) to git... "
+
+    # Push the new versions
+    git push --quiet origin main
+
+    echo "done"
+fi
+
 # Remove intermediate files as they are not needed anymore
 rm versions.json all-versions.txt installed-versions.txt needed-versions.txt
 
-echo "Pushing new version(s) to git... "
-
-# Push the new versions
-git push --quiet origin main
-
-echo "done"
 echo "All done, have fun with the new modpack version(s)"
