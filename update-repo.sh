@@ -1,34 +1,55 @@
+#!/bin/bash
+set -euo pipefail
+
+echo -n "Checking for new versions... "
+
 # Download the Versions JSON
 VERSIONS_URL=https://addons-ecs.forgesvc.net/api/v2/addon/381671/files
-wget "${VERSIONS_URL}" -O versions.json
+wget -q "${VERSIONS_URL}" -O versions.json
 
-# Set the env variable LATEST_VERSION_NUMBER
-LATEST_VERSION_NUMBER=$(jq -r 'sort_by(.fileDate)[-1].fileName' versions.json | cut -d '-' -f 2 | cut -d '.' -f 1-3)
-echo $LATEST_VERSION_NUMBER
+# Get all available versions and save them in the file 'all-versions.txt'
+jq -r 'map(.fileName) | .[]' versions.json | rev | cut -d '-' -f 1 | cut -d '.' -f 2-4 | rev | sort >all-versions.txt
 
-# Set the env variable LATEST_VERSION_DOWNLOAD
-LATEST_VERSION_DOWNLOAD=https://www.curseforge.com/minecraft/modpacks/all-the-mods-6/download/$(jq -r 'sort_by(.fileDate)[-1].serverPackFileId' versions.json)/file
-echo $LATEST_VERSION_DOWNLOAD
+# Get all already installed versions and save them in the file 'installed-versions.txt'
+ls versions | sort >installed-versions.txt
 
-# Remove the downladed versions JSON
-rm versions.json
+# Make a list of all versions that are not installed and save it in the file 'needed-versions.txt'
+comm -23 all-versions.txt installed-versions.txt >needed-versions.txt
 
-# Download the latest versions zip file
-wget "$LATEST_VERSION_DOWNLOAD" -O download.zip
+echo "done"
 
-# Create new Folder for the new version
-#mkdir versions/${LATEST_VERSION_NUMBER}
+echo "$(wc <needed-versions.txt -l) new version(s) found"
 
-# Unzip the newly downloaded File
-#unzip download.zip -d versions/${LATEST_VERSION_NUMBER}
+# Go over all needed versions and download the zip files
+while read VERSION; do
+    echo -n "Downloading version ${VERSION}... "
+    FILE_ID=$(jq -r --arg VERSION "$VERSION" 'map(select(.fileName | contains($VERSION + ".zip"))) | map(.serverPackFileId) | .[]' versions.json)
+    DOWNLOAD_URL=https://addons-ecs.forgesvc.net/api/v2/addon/381671/file/$FILE_ID/download-url
 
-# Remove the downladed versions zip file
-#rm download.zip
+    # Download the latest modpack zip file
+    DOWNLOAD_LINK=$(curl -s "$DOWNLOAD_URL")
+    wget -q "$DOWNLOAD_LINK" -O download.zip
 
-# Remove the unwanted bat file
-#rm versions/${LATEST_VERSION_NUMBER}/startserver.bat
+    # Unzip the newly downloaded zip file
+    unzip -j -qq download.zip -d versions/${VERSION}
 
-# Commit and Push the new Version
-#git add versions/${LATEST_VERSION_NUMBER}
-#git commit -m "New Version: ${LATEST_VERSION_NUMBER}"
-#git push origin main
+    # Remove the downladed zip file and the unwanted bat file
+    rm download.zip versions/${VERSION}/startserver.bat
+
+    # Commit the new version
+    git add versions/${VERSION}
+    git commit --quiet -m "Added new version ${VERSION}"
+
+    echo "done"
+done <needed-versions.txt
+
+# Remove intermediate files as they are not needed anymore
+rm versions.json all-versions.txt installed-versions.txt needed-versions.txt
+
+echo "Pushing new version(s) to git... "
+
+# Push the new versions
+git push --quiet origin main
+
+echo "done"
+echo "All done, have fun with the new modpack version(s)"
