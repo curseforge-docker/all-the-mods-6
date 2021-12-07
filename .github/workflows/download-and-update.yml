@@ -14,5 +14,4 @@ jobs:
         uses: fregante/setup-git-user@v1
           
       - name: Run update script
-        run: |
-          bash update-repo.sh
+        run: bash update-repo.sh

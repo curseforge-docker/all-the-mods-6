@@ -43,8 +43,8 @@ while read VERSION; do
     echo "done"
 done <needed-versions.txt
 
-if (( $(wc <needed-versions.txt -l) > 0)); then
-    echo "Pushing new version(s) to git... "
+if (($(wc <needed-versions.txt -l) > 0)); then
+    echo -n "Pushing new version(s) to git... "
 
     # Push the new versions
     git push --quiet origin main
