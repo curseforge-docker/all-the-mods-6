@@ -18,7 +18,7 @@ comm -23 all-versions.txt installed-versions.txt >needed-versions.txt
 
 echo "done"
 
-echo "$(wc <needed-versions.txt -l) new version(s) found"
+echo " => $(wc <needed-versions.txt -l) new version(s) found"
 
 # Go over all needed versions and download the zip files
 while read VERSION; do

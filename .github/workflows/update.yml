@@ -1,4 +1,4 @@
-name: Download and Update
+name: Update
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
     - cron:  '0 0 * * *'
 
 jobs:
-  download:
+  update:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -16,4 +16,4 @@ jobs:
         uses: fregante/setup-git-user@v1
           
       - name: Run update script
-        run: bash update-repo.sh
+        run: bash update.sh
