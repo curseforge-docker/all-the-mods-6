@@ -38,20 +38,16 @@ while read VERSION; do
         --build-arg VERSION=${VERSION} \
         --build-arg JAVA_VERSION=${JAVA_VERSION}
 
-    echo "done"
-
-    echo -n "Pushing version ${VERSION} to Docker Hub... "
-
     # Push to Docker Hub
+    echo -n "Pushing version ${VERSION} with version tag to Docker Hub... "
     docker push -q curseforge/${MODPACK_NAME}:${VERSION}
+    echo -n "Pushing version ${VERSION} with latest tag to Docker Hub... "
     docker push -q curseforge/${MODPACK_NAME}:latest
 
-    echo "done"
-
-    echo -n "Pushing version ${VERSION} to GitHub Container Registry... "
-
     # Push to GitHub Container Registry
+    echo -n "Pushing version ${VERSION} with version tag to GitHub Container Registry... "
     docker push -q ghcr.io/curseforge-docker/${MODPACK_NAME}:${VERSION}
+    echo -n "Pushing version ${VERSION} with latest tag to GitHub Container Registry... "
     docker push -q ghcr.io/curseforge-docker/${MODPACK_NAME}:latest
 
     echo "done"

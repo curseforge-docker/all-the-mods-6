@@ -1,8 +1,6 @@
 name: Publish
 
 on:
-  # temp
-  workflow_dispatch:
   push:
     branches:
       - main
