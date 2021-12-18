@@ -49,8 +49,6 @@ while read VERSION; do
     docker push -q ghcr.io/curseforge-docker/${MODPACK_NAME}:${VERSION}
     echo -n "Pushing version ${VERSION} with latest tag to GitHub Container Registry... "
     docker push -q ghcr.io/curseforge-docker/${MODPACK_NAME}:latest
-
-    echo "done"
 done <unpublished-versions.txt
 
 # Remove intermediate files as they are not needed anymore
