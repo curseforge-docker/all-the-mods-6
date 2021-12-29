@@ -3,7 +3,7 @@ name: Update
 on:
   workflow_dispatch:
   schedule:
-    - cron:  '0 * * * *'
+    - cron:  '0 3 * * *'
 
 jobs:
   update:
@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+          with:
+            token: ${{ secrets.GHCR_TOKEN }}
         
       - name: Set git user and email  
         uses: fregante/setup-git-user@v1

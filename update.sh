@@ -41,16 +41,14 @@ while read VERSION; do
     git commit --quiet -m "Added new version ${VERSION}"
 
     echo "done"
-done <needed-versions.txt
 
-if (($(wc <needed-versions.txt -l) > 0)); then
-    echo -n "Pushing new version(s) to git... "
+    echo -n "Pushing version ${VERSION} to git... "
 
-    # Push the new versions
+    # Push the new version to git
     git push --quiet origin main
 
     echo "done"
-fi
+done <needed-versions.txt
 
 # Remove intermediate files as they are not needed anymore
 rm versions.json all-versions.txt installed-versions.txt needed-versions.txt
