@@ -11,8 +11,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-          with:
-            token: ${{ secrets.GHCR_TOKEN }}
+        with:
+          token: ${{ secrets.GHCR_TOKEN }}
         
       - name: Set git user and email  
         uses: fregante/setup-git-user@v1
